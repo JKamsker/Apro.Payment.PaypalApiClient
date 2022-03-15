@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace PaypalPaymentProvider.Models
+namespace Apro.Payment.PaypalApiClient.Models
 {
     public class PaypalCredentials : IEquatable<PaypalCredentials>
     {

@@ -3,7 +3,7 @@ using System;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace PaypalPaymentProvider.Http
+namespace Apro.Payment.PaypalApiClient.Http
 {
     public class BasicAuthenticationHeaderValue : AuthenticationHeaderValue
     {

@@ -1,12 +1,10 @@
-﻿using PaypalPaymentProvider.Models.Order.Create;
+﻿using Apro.Payment.PaypalApiClient.Models.Order.Create;
 
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 
-namespace PaypalPaymentProvider.Models
+namespace Apro.Payment.PaypalApiClient.Models
 {
-    public  class PurchaseUnit
+    public class PurchaseUnit
     {
         public string ReferenceId { get; set; }
 
@@ -18,7 +16,7 @@ namespace PaypalPaymentProvider.Models
             Amount = amount;
         }
 
-        internal PurchaseUnitDto AsDto() 
+        internal PurchaseUnitDto AsDto()
             => new PurchaseUnitDto(ReferenceId, Amount.AsDto());
     }
 

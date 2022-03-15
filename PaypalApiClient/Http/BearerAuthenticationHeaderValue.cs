@@ -1,7 +1,7 @@
 ﻿
 using System.Net.Http.Headers;
 
-namespace PaypalPaymentProvider.Http
+namespace Apro.Payment.PaypalApiClient.Http
 {
     public class BearerAuthenticationHeaderValue : AuthenticationHeaderValue
     {

@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿
+using Newtonsoft.Json;
 
 using System;
 
-namespace PaypalPaymentProvider.Models.Token
+namespace Apro.Payment.PaypalApiClient.Models.Token
 {
     public class PaypalTokenResponseDto
     {

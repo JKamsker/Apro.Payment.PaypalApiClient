@@ -1,10 +1,10 @@
 ﻿
-using PaypalPaymentProvider.Models;
+using Apro.Payment.PaypalApiClient.Models;
 
 using System;
 using System.Threading.Tasks;
 
-namespace PaypalPaymentProvider.Services
+namespace Apro.Payment.PaypalApiClient.Services
 {
     public class PaypalAccessTokenManager
     {

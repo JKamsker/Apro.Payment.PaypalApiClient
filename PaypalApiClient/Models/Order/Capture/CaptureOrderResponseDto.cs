@@ -1,10 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 using System;
 using System.Collections.Generic;
 
-namespace PaypalPaymentProvider.Models.Order.Capture
+namespace Apro.Payment.PaypalApiClient.Models.Order.Capture
 {
     public class CaptureOrderResponseDto
     {

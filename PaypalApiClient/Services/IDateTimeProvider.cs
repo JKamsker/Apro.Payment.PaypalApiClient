@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace PaypalPaymentProvider.Services
+namespace Apro.Payment.PaypalApiClient.Services
 {
     public interface IDateTimeProvider
     {

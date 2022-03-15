@@ -1,18 +1,17 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using Apro.Payment.PaypalApiClient.Models.Order.Capture;
+using Apro.Payment.PaypalApiClient.Models.Order.Create;
+using Apro.Payment.PaypalApiClient.Models.Order.Get;
 
-using PaypalPaymentProvider.Models.Order.Capture;
-using PaypalPaymentProvider.Models.Order.Create;
-using PaypalPaymentProvider.Models.Order.Get;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Threading.Tasks;
 
-namespace PaypalPaymentProvider.Models.Order
+namespace Apro.Payment.PaypalApiClient.Models.Order
 {
     public class PaypalOrder
     {

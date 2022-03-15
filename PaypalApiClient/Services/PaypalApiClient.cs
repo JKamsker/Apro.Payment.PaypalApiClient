@@ -1,13 +1,12 @@
-﻿
-using PaypalPaymentProvider.Models.Order;
-using PaypalPaymentProvider.Models.Order.Create;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Linq;
 using Ardalis.GuardClauses;
-using PaypalPaymentProvider.Extensions;
-using PaypalPaymentProvider.Models;
+using Apro.Payment.PaypalApiClient.Models;
+using Apro.Payment.PaypalApiClient.Extensions;
+using Apro.Payment.PaypalApiClient.Models.Order;
+using Apro.Payment.PaypalApiClient.Models.Order.Create;
 
-namespace PaypalPaymentProvider.Services
+namespace Apro.Payment.PaypalApiClient.Services
 {
     public class PaypalApiClient
     {

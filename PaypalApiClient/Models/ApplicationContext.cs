@@ -1,9 +1,8 @@
-﻿
-using PaypalPaymentProvider.Models.Order.Create;
+﻿using Apro.Payment.PaypalApiClient.Models.Order.Create;
 
 using System;
 
-namespace PaypalPaymentProvider.Models
+namespace Apro.Payment.PaypalApiClient.Models
 {
     public class ApplicationContext
     {

@@ -1,7 +1,6 @@
-﻿using PaypalPaymentProvider.Models;
-using PaypalPaymentProvider.Models.Order.Create;
+﻿using Apro.Payment.PaypalApiClient.Models;
 
-namespace PaypalPaymentProvider.Services
+namespace Apro.Payment.PaypalApiClient.Services
 {
     public class PaypalApiClientFactory
     {

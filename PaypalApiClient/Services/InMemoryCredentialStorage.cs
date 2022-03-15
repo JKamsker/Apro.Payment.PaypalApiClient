@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 using Ardalis.GuardClauses;
-using PaypalPaymentProvider.Models;
+using Apro.Payment.PaypalApiClient.Models;
 
-namespace PaypalPaymentProvider.Services
+namespace Apro.Payment.PaypalApiClient.Services
 {
     public class InMemoryCredentialStorage : ICredentialStorage
     {

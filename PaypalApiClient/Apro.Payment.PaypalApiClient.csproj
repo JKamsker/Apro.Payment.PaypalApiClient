@@ -5,6 +5,9 @@
 		<LangVersion>latest</LangVersion>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Version>1.0.3</Version>
+		<Authors>Jonas Kamsker</Authors>
+		<Company>Apro</Company>
+		<Description>Package to communicate with the paypal api</Description>
 	</PropertyGroup>
 
 	<ItemGroup>

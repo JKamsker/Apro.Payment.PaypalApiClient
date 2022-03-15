@@ -1,19 +1,18 @@
 ﻿
 using Newtonsoft.Json;
-using PaypalPaymentProvider.Models.Order.Create;
-using PaypalPaymentProvider.Models.Order.Get;
-using PaypalPaymentProvider.Models.Token;
 
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-
-using PaypalPaymentProvider.Http;
-using PaypalPaymentProvider.Models.Order.Capture;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
+using Apro.Payment.PaypalApiClient.Models.Order.Get;
+using Apro.Payment.PaypalApiClient.Models.Order.Create;
+using Apro.Payment.PaypalApiClient.Models.Token;
+using Apro.Payment.PaypalApiClient.Models.Order.Capture;
+using Apro.Payment.PaypalApiClient.Http;
 
-namespace PaypalPaymentProvider.Services
+namespace Apro.Payment.PaypalApiClient.Services
 {
     public class PaypalHttpClient
     {

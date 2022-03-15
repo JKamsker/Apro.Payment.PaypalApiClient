@@ -1,15 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PaypalPaymentProvider.Models.Order.Create
+namespace Apro.Payment.PaypalApiClient.Models.Order.Create
 {
     /// <summary>
     /// The intent to either capture payment immediately or authorize a payment for an order after order creation.
@@ -89,7 +87,7 @@ namespace PaypalPaymentProvider.Models.Order.Create
             Value = value;
             CurrencyCode = currencyCode;
         }
-        public CurrencyDto(decimal value, string currencyCode) 
+        public CurrencyDto(decimal value, string currencyCode)
             : this(value.ToString(CultureInfo.GetCultureInfoByIetfLanguageTag("EN-US")), currencyCode)
         {
         }

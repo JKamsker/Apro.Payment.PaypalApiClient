@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace PaypalPaymentProvider.Http
+namespace Apro.Payment.PaypalApiClient.Http
 {
     public class JsonContent : HttpContent
     {
