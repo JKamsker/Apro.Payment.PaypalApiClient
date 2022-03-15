@@ -1,3 +1,5 @@
+﻿
+
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
@@ -8,6 +10,7 @@
 		<Authors>Jonas Kamsker</Authors>
 		<Company>Apro</Company>
 		<Description>Package to communicate with the paypal api</Description>
+		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -20,4 +23,7 @@
 		<PackageReference Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="$(SolutionDir)LICENSE.txt" Pack="true" PackagePath="" Link="Licenses\LICENSE.txt" />
+	</ItemGroup>
 </Project>
