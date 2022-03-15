@@ -12,6 +12,10 @@
 		<Description>Package to communicate with the paypal api</Description>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 		<PackageIcon>Logo.png</PackageIcon>
+		<Copyright>Apro</Copyright>
+		<PackageProjectUrl>https://github.com/JKamsker/Apro.Payment.PaypalApiClient</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/JKamsker/Apro.Payment.PaypalApiClient</RepositoryUrl>
+		<PackageTags>paypal;paypal client;payment;</PackageTags>
 	</PropertyGroup>
 
 	<ItemGroup>
