@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Apro.Payment.PaypalApiClient.Example": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
