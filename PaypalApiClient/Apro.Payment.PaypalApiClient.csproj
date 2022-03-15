@@ -11,6 +11,7 @@
 		<Company>Apro</Company>
 		<Description>Package to communicate with the paypal api</Description>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+		<PackageIcon>Logo.png</PackageIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -24,6 +25,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="$(SolutionDir)LICENSE.txt" Pack="true" PackagePath="" Link="Licenses\LICENSE.txt" />
+		<None Include="$(SolutionDir)LICENSE.txt" Pack="true" PackagePath="" Link="Content/LICENSE.txt" />
+		<None Include="$(SolutionDir)Logo.png" Pack="true" PackagePath="" Link="Content/Logo.png" />
+		
 	</ItemGroup>
 </Project>
