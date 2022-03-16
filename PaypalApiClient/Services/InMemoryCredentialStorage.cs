@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 using Ardalis.GuardClauses;
-using Apro.Payment.PaypalApiClient.Models;
+using Apro.Payment.PaypalApiClient.Models.Domain;
 
 namespace Apro.Payment.PaypalApiClient.Services
 {

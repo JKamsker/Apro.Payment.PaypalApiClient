@@ -37,8 +37,6 @@ namespace Apro.Payment.PaypalApiClient.Http
             return Task.FromResult<object>(null);
         }
 
-
-
         protected override bool TryComputeLength(out long length)
         {
             length = -1;

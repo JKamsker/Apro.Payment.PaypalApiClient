@@ -6,11 +6,13 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
-using Apro.Payment.PaypalApiClient.Models.Order.Get;
-using Apro.Payment.PaypalApiClient.Models.Order.Create;
-using Apro.Payment.PaypalApiClient.Models.Token;
-using Apro.Payment.PaypalApiClient.Models.Order.Capture;
 using Apro.Payment.PaypalApiClient.Http;
+using Apro.Payment.PaypalApiClient.Models.Web.Order.Get;
+using Apro.Payment.PaypalApiClient.Models.Web.Order.Create;
+using Apro.Payment.PaypalApiClient.Models.Web.Token;
+using Apro.Payment.PaypalApiClient.Models.Web.Payment.Refund;
+using Apro.Payment.PaypalApiClient.Models.Web.Error;
+using Apro.Payment.PaypalApiClient.Models.Exceptions;
 
 namespace Apro.Payment.PaypalApiClient.Services
 {
@@ -31,37 +33,35 @@ namespace Apro.Payment.PaypalApiClient.Services
 
             request.Content = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("grant_type", "client_credentials") });
 
-            var response = await _httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-            var responseText = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<PaypalTokenResponseDto>(responseText);
+            return await ExecuteRequestAsync<PaypalTokenResponseDto>(request);
         }
 
-        public async Task<PaypalCreateOrderResponseDto> CreateOrderAsync(string token, PaypalCreateOrderRequestDto createOrderRequestDto)
+        private async Task<T> ExecuteRequestAsync<T>(HttpRequestMessage request)
+        {
+            var response = await _httpClient.SendAsync(request);
+            await HandleUnsuccessfulResponse(response);
+
+            var responseText = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<T>(responseText);
+        }
+
+        public async Task<GetOrderDetailsResponseDto> CreateOrderAsync(string token, PaypalCreateOrderRequestDto createOrderRequestDto)
         {
             using var request = new HttpRequestMessage(HttpMethod.Post, "/v2/checkout/orders");
             PrepareHeaders(token, request);
-
             request.Content = new JsonContent(createOrderRequestDto);
 
-            var response = await _httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-            var responseText = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<PaypalCreateOrderResponseDto>(responseText);
+            return await ExecuteRequestAsync<GetOrderDetailsResponseDto>(request);
         }
 
-        public async Task<GetOrderDetailsResponseDto> GetOrderStatusAsync(string token, string orderId)
+        public async Task<GetOrderDetailsResponseDto> GetOrderDetailsAsync(string token, string orderId)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, $"/v2/checkout/orders/{orderId}");
             PrepareHeaders(token, request);
-
-            var response = await _httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-            var responseText = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<GetOrderDetailsResponseDto>(responseText);
+            return await ExecuteRequestAsync<GetOrderDetailsResponseDto>(request);
         }
 
-        public async Task<CaptureOrderResponseDto> CaptureOrderAsync(string token, string orderId)
+        public async Task<GetOrderDetailsResponseDto> CaptureOrderAsync(string token, string orderId)
         {
             ///v2/checkout/orders/{{payment_id}}/capture
             using var request = new HttpRequestMessage(HttpMethod.Post, $"/v2/checkout/orders/{orderId}/capture");
@@ -70,11 +70,39 @@ namespace Apro.Payment.PaypalApiClient.Services
             request.Content = new StringContent("");
             request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
 
-            var response = await _httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-            var responseText = await response.Content.ReadAsStringAsync();
+            return await ExecuteRequestAsync<GetOrderDetailsResponseDto>(request);
+        }
 
-            return JsonConvert.DeserializeObject<CaptureOrderResponseDto>(responseText);
+        public async Task<PaymentRefundResultDto> RefundPaymentAsync(string token, string paymentCaptureId, PaymentRefundRequestDto refundRequest)
+        {
+            ///v2/payments/captures/5JJ41332CP233092P/refund
+            using var request = new HttpRequestMessage(HttpMethod.Post, $"/v2/payments/captures/{paymentCaptureId}/refund");
+            PrepareHeaders(token, request);
+            request.Content = new JsonContent(refundRequest);
+            return await ExecuteRequestAsync<PaymentRefundResultDto>(request);
+        }
+
+        private static async Task HandleUnsuccessfulResponse(HttpResponseMessage response)
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                return;
+            }
+
+            PaypalErrorResultDto result;
+            string responseText;
+            try
+            {
+                responseText = await response.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<PaypalErrorResultDto>(responseText);
+            }
+            catch
+            {
+                response.EnsureSuccessStatusCode();
+                return;
+            }
+
+            throw new PaypalRequestException(result);
         }
 
         private static void PrepareHeaders(string token, HttpRequestMessage request)
@@ -89,6 +117,7 @@ namespace Apro.Payment.PaypalApiClient.Services
             // https://developer.paypal.com/api/rest/requests/#paypal-request-id
             request.Headers.Add("PayPal-Client-Metadata-Id", "Apro-Smorder");
             request.Headers.Add("PayPal-Request-Id", Guid.NewGuid().ToString());
+            request.Headers.Add("Prefer", "return=representation");
         }
     }
 }

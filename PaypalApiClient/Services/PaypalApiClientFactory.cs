@@ -1,4 +1,4 @@
-﻿using Apro.Payment.PaypalApiClient.Models;
+﻿using Apro.Payment.PaypalApiClient.Models.Domain;
 
 namespace Apro.Payment.PaypalApiClient.Services
 {

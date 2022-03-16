@@ -1,4 +1,6 @@
 ﻿
+using Apro.Payment.PaypalApiClient.Models.Web.Order.Get;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -7,7 +9,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.Serialization;
 
-namespace Apro.Payment.PaypalApiClient.Models.Order.Create
+namespace Apro.Payment.PaypalApiClient.Models.Web.Order.Create
 {
     /// <summary>
     /// The intent to either capture payment immediately or authorize a payment for an order after order creation.
@@ -30,9 +32,6 @@ namespace Apro.Payment.PaypalApiClient.Models.Order.Create
         [EnumMember(Value = "AUTHORIZE")]
         Authorize
     }
-
-
-
 
     public class PaypalCreateOrderRequestDto
     {
@@ -58,43 +57,4 @@ namespace Apro.Payment.PaypalApiClient.Models.Order.Create
         [JsonProperty("cancel_url")]
         public Uri CancelUrl { get; set; }
     }
-
-    public class PurchaseUnitDto
-    {
-        [JsonProperty("reference_id")]
-        public string ReferenceId { get; set; }
-
-        [JsonProperty("amount")]
-        public CurrencyDto Amount { get; set; }
-
-        public PurchaseUnitDto(string referenceId, CurrencyDto amount)
-        {
-            ReferenceId = referenceId;
-            Amount = amount;
-        }
-    }
-
-    public class CurrencyDto
-    {
-        [JsonProperty("currency_code")]
-        public string CurrencyCode { get; set; }
-
-        [JsonProperty("value")]
-        public string Value { get; set; }
-
-        internal CurrencyDto(string value, string currencyCode)
-        {
-            Value = value;
-            CurrencyCode = currencyCode;
-        }
-        public CurrencyDto(decimal value, string currencyCode)
-            : this(value.ToString(CultureInfo.GetCultureInfoByIetfLanguageTag("EN-US")), currencyCode)
-        {
-        }
-
-        public static CurrencyDto Euro(decimal value) => new CurrencyDto(value, "EUR");
-        public static CurrencyDto UsDollar(decimal value) => new CurrencyDto(value, "USD");
-    }
-
-
 }

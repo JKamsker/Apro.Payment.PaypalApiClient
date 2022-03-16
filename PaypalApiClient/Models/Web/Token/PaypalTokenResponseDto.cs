@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 using System;
 
-namespace Apro.Payment.PaypalApiClient.Models.Token
+namespace Apro.Payment.PaypalApiClient.Models.Web.Token
 {
     public class PaypalTokenResponseDto
     {

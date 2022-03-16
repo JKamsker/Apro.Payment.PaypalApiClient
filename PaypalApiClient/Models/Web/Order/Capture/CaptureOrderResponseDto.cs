@@ -1,11 +1,12 @@
-﻿
+﻿using Apro.Payment.PaypalApiClient.Models.Domain;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 using System;
 using System.Collections.Generic;
 
-namespace Apro.Payment.PaypalApiClient.Models.Order.Capture
+namespace Apro.Payment.PaypalApiClient.Models.Web.Order.Capture
 {
     public class CaptureOrderResponseDto
     {

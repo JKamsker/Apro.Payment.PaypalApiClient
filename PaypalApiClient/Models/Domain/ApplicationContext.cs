@@ -1,8 +1,6 @@
-﻿using Apro.Payment.PaypalApiClient.Models.Order.Create;
+﻿using System;
 
-using System;
-
-namespace Apro.Payment.PaypalApiClient.Models
+namespace Apro.Payment.PaypalApiClient.Models.Domain
 {
     public class ApplicationContext
     {
@@ -28,11 +26,5 @@ namespace Apro.Payment.PaypalApiClient.Models
         {
 
         }
-
-        internal ApplicationContextDto AsDto() => new ApplicationContextDto
-        {
-            ReturnUrl = ReturnUrl,
-            CancelUrl = CancelUrl,
-        };
     }
 }

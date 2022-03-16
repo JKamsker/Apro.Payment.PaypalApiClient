@@ -1,5 +1,4 @@
-﻿
-using Apro.Payment.PaypalApiClient.Models;
+﻿using Apro.Payment.PaypalApiClient.Models.Domain;
 
 using System.Threading.Tasks;
 

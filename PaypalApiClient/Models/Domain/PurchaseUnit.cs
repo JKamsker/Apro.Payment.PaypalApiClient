@@ -1,23 +1,24 @@
-﻿using Apro.Payment.PaypalApiClient.Models.Order.Create;
+﻿using Apro.Payment.PaypalApiClient.Models.Web.Order.Create;
 
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
-namespace Apro.Payment.PaypalApiClient.Models
+namespace Apro.Payment.PaypalApiClient.Models.Domain
 {
     public class PurchaseUnit
     {
         public string ReferenceId { get; set; }
 
         public Currency Amount { get; set; }
+        public ICollection<PaymentCapture> Captures { get; }
 
-        public PurchaseUnit(string referenceId, Currency amount)
+        public PurchaseUnit(string referenceId, Currency amount, IEnumerable<PaymentCapture> captures = null)
         {
             ReferenceId = referenceId;
             Amount = amount;
+            Captures = captures?.ToList();
         }
-
-        internal PurchaseUnitDto AsDto()
-            => new PurchaseUnitDto(ReferenceId, Amount.AsDto());
     }
 
     public class Currency
@@ -25,6 +26,12 @@ namespace Apro.Payment.PaypalApiClient.Models
         public string CurrencyCode { get; set; }
 
         public string Value { get; set; }
+
+        internal Currency(string value, string currencyCode)
+        {
+            Value = value;
+            CurrencyCode = currencyCode;
+        }
 
         public Currency(decimal value, string currencyCode)
         {
@@ -34,9 +41,15 @@ namespace Apro.Payment.PaypalApiClient.Models
 
         public static Currency Euro(decimal value) => new Currency(value, "EUR");
         public static Currency UsDollar(decimal value) => new Currency(value, "USD");
+    }
 
-        internal CurrencyDto AsDto()
-            => new CurrencyDto(Value, CurrencyCode);
+    public class PaymentCapture
+    {
+        public string Id { get; set; }
+
+        public PaypalCaptureStatus Status { get; set; }
+
+        public Currency Amount { get; set; }
     }
 
 }

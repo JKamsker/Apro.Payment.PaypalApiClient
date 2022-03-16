@@ -1,7 +1,4 @@
-﻿using Apro.Payment.PaypalApiClient.Models.Order.Capture;
-using Apro.Payment.PaypalApiClient.Models.Order.Create;
-using Apro.Payment.PaypalApiClient.Models.Order.Get;
-
+﻿
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -11,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace Apro.Payment.PaypalApiClient.Models.Order
+namespace Apro.Payment.PaypalApiClient.Models.Domain
 {
     public class PaypalOrder
     {
@@ -23,32 +20,37 @@ namespace Apro.Payment.PaypalApiClient.Models.Order
 
         public LinkCollection Links { get; set; }
 
+        public PurchaseUnitCollection PurchaseUnits { get; set; }
+
         public PaypalOrder()
         {
 
         }
-
-        internal static PaypalOrder FromDto(PaypalCreateOrderResponseDto responseDto) => new()
-        {
-            Id = responseDto.Id,
-            Status = responseDto.Status,
-            Links = new(responseDto.Links)
-        };
-
-        internal static PaypalOrder FromDto(GetOrderDetailsResponseDto responseDto) => new()
-        {
-            Id = responseDto.Id,
-            Status = responseDto.Status,
-            Links = new(responseDto.Links)
-        };
-
-        internal static PaypalOrder FromDto(CaptureOrderResponseDto responseDto) => new()
-        {
-            Id = responseDto.Id,
-            Status = responseDto.Status,
-            Links = new(responseDto.Links)
-        };
     }
+
+
+
+    public class PurchaseUnitCollection : IReadOnlyCollection<PurchaseUnit>
+    {
+        private readonly ICollection<PurchaseUnit> _purchaseUnits;
+
+        public PurchaseUnitCollection(IEnumerable<PurchaseUnit> purchaseUnits)
+        {
+            _purchaseUnits = (purchaseUnits ?? Enumerable.Empty<PurchaseUnit>())?.ToList();
+        }
+
+        public int Count => _purchaseUnits.Count();
+
+        public IEnumerator<PurchaseUnit> GetEnumerator()
+            => _purchaseUnits.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator()
+            => _purchaseUnits.GetEnumerator();
+
+        public PurchaseUnit FindByReference(string referenceId)
+            => _purchaseUnits.FirstOrDefault(x => string.Equals(x.ReferenceId, referenceId, StringComparison.OrdinalIgnoreCase));
+    }
+
 
     public class LinkCollection : IReadOnlyCollection<Link>
     {
@@ -57,9 +59,9 @@ namespace Apro.Payment.PaypalApiClient.Models.Order
         public Link Update => GetLink("update");
         public Link Capture => GetLink("capture");
 
-        public LinkCollection(ICollection<Link> links)
+        public LinkCollection(IEnumerable<Link> links)
         {
-            _links = links;
+            _links = links.ToList();
         }
 
 
@@ -70,6 +72,50 @@ namespace Apro.Payment.PaypalApiClient.Models.Order
 
         public IEnumerator<Link> GetEnumerator() => _links.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => _links.GetEnumerator();
+    }
+
+
+
+    public enum PaypalCaptureStatus
+    {
+        Default,
+
+        /// <summary>
+        /// The funds for this captured payment were credited to the payee's PayPal account.
+        /// </summary>
+        [EnumMember(Value = "COMPLETED")]
+        Completed,
+
+        /// <summary>
+        /// The funds could not be captured.
+        /// </summary>
+        [EnumMember(Value = "DECLINED")]
+        Declined,
+
+        /// <summary>
+        /// An amount less than this captured payment's amount was partially refunded to the payer.
+        /// </summary>
+        [EnumMember(Value = "PARTIALLY_REFUNDED")]
+        PartiallyRefunded,
+
+        /// <summary>
+        /// The funds for this captured payment was not yet credited to the payee's PayPal account. 
+        /// For more information, see status.details.
+        /// </summary>
+        [EnumMember(Value = "PENDING")]
+        Pending,
+
+        /// <summary>
+        /// An amount greater than or equal to this captured payment's amount was refunded to the payer.
+        /// </summary>
+        [EnumMember(Value = "REFUNDED")]
+        Refunded,
+
+        /// <summary>
+        /// There was an error while capturing payment.
+        /// </summary>
+        [EnumMember(Value = "FAILED")]
+        Failed
     }
 
     public enum PaypalOrderStatus
@@ -114,16 +160,5 @@ namespace Apro.Payment.PaypalApiClient.Models.Order
         /// </summary>
         [EnumMember(Value = "PAYER_ACTION_REQUIRED")]
         PayerActionRequired
-    }
-    public class Link
-    {
-        [JsonProperty("href")]
-        public Uri Href { get; set; }
-
-        [JsonProperty("rel")]
-        public string Rel { get; set; }
-
-        [JsonProperty("method")]
-        public string Method { get; set; }
     }
 }
