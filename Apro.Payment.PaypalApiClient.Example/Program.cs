@@ -10,6 +10,8 @@ using Microsoft.Extensions.Options;
 using System.Net;
 using Polly;
 using Polly.Contrib.WaitAndRetry;
+using Apro.Payment.PaypalApiClient.Configuration;
+using System.Runtime.CompilerServices;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((context, builder) =>
@@ -23,44 +25,18 @@ var host = Host.CreateDefaultBuilder(args)
     {
         coll.Configure<PaypalCredentials>(ctx.Configuration.GetSection("PaypalCredentials"));
 
-        coll.AddHttpClient<PaypalHttpClient>(x =>
-        {
-            x.BaseAddress = new Uri("https://api-m.sandbox.paypal.com");
-            // x.BaseAddress = new Uri("https://api-m.paypal.com");
-            
-            x.DefaultRequestHeaders.Add("PayPal-Client-Metadata-Id", "Apro-Smorder");
-            x.DefaultRequestHeaders.Add("Prefer", "return=representation");
-        })
-        .AddPolicyHandler(msg =>
-        {
-            var delay = Backoff.DecorrelatedJitterBackoffV2(medianFirstRetryDelay: TimeSpan.FromSeconds(1), retryCount: 10);
-
-            return Policy<HttpResponseMessage>
-                .Handle<HttpRequestException>()
-                .OrResult(x => x.StatusCode == HttpStatusCode.TooManyRequests)
-                .OrResult(x => (int)x.StatusCode >= (int)HttpStatusCode.InternalServerError && (int)x.StatusCode <= 599)
-                .WaitAndRetryAsync(delay);
-        })
-        ;
-
-        coll.AddTransient<PaypalApiClientFactory>();
-
-        coll.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-        coll.AddSingleton<ICredentialStorage, InMemoryCredentialStorage>();
-        coll.AddSingleton<PaypalAccessTokenManager>();
-        //coll.AddSingleton(new ApplicationContext
-        //{
-        //    ReturnUrl = new Uri("https://google.at/success"),
-        //    CancelUrl = new Uri("https://google.at/cancel")
-        //});
+        new PaypalApiClientConfigurator(coll)
+            .UseDevelopment()
+            .WithClientName("Apro-Smorder")
+            .WithReturnUrls("https://www.youtube.com/watch?v=dQw4w9WgXcQ?success=true", "https://www.youtube.com/watch?v=dQw4w9WgXcQ?success=false")
+            .Apply();
     })
     .Build();
 
-
-var fac = host.Services.GetRequiredService<PaypalApiClientFactory>();
 var credentials = host.Services.GetRequiredService<IOptions<PaypalCredentials>>();
 
 
+var fac = host.Services.GetRequiredService<PaypalApiClientFactory>();
 var cli = fac.Create(credentials.Value);
 
 
@@ -84,11 +60,18 @@ if (order2.Status != PaypalOrderStatus.Completed)
 
 await cli.RefundOrderAsync(order2.Id);
 
-//foreach (var purchaseUnit in order2.PurchaseUnits)
-//{
-//    //purchaseUnit.ReferenceId
-//}
 
 
 
 Console.WriteLine("Hello, World!");
+
+PaypalApiClientFactory CreateFacWithoutHost()
+{
+    var facfac = PaypalApiClientConfigurator.New
+    .UseDevelopment()
+    .WithClientName("Apro-Smorder")
+    .WithReturnUrls("https://www.youtube.com/watch?v=dQw4w9WgXcQ?success=true", "https://www.youtube.com/watch?v=dQw4w9WgXcQ?success=false")
+    .Build();
+
+    return facfac.Create();
+}

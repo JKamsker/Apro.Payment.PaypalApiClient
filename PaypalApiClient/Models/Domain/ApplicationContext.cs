@@ -4,11 +4,11 @@ namespace Apro.Payment.PaypalApiClient.Models.Domain
 {
     public class ApplicationContext
     {
-        public Uri ReturnUrl { get; set; }
+        public Uri ReturnUrl { get; private set; }
 
 
 
-        public Uri CancelUrl { get; set; }
+        public Uri CancelUrl { get; private set; }
 
         public ApplicationContext()
         {
