@@ -27,10 +27,13 @@ var host = Host.CreateDefaultBuilder(args)
         {
             x.BaseAddress = new Uri("https://api-m.sandbox.paypal.com");
             // x.BaseAddress = new Uri("https://api-m.paypal.com");
+            
+            x.DefaultRequestHeaders.Add("PayPal-Client-Metadata-Id", "Apro-Smorder");
+            x.DefaultRequestHeaders.Add("Prefer", "return=representation");
         })
         .AddPolicyHandler(msg =>
         {
-            var delay = Backoff.DecorrelatedJitterBackoffV2(medianFirstRetryDelay: TimeSpan.FromSeconds(1), retryCount: 5);
+            var delay = Backoff.DecorrelatedJitterBackoffV2(medianFirstRetryDelay: TimeSpan.FromSeconds(1), retryCount: 10);
 
             return Policy<HttpResponseMessage>
                 .Handle<HttpRequestException>()
@@ -38,20 +41,6 @@ var host = Host.CreateDefaultBuilder(args)
                 .OrResult(x => (int)x.StatusCode >= (int)HttpStatusCode.InternalServerError && (int)x.StatusCode <= 599)
                 .WaitAndRetryAsync(delay);
         })
-        //.AddPolicyHandler(msg =>
-        //{
-        //    var delay = Backoff.DecorrelatedJitterBackoffV2(medianFirstRetryDelay: TimeSpan.FromSeconds(1), retryCount: 5);
-
-        //    return Policy<HttpResponseMessage>
-        //        .Handle<HttpRequestException>()
-        //        .OrResult(x => x.StatusCode == HttpStatusCode.UnprocessableEntity)
-        //        //.FallbackAsync(async token =>
-        //        //{
-
-        //        //})
-                
-        //        ;
-        //})
         ;
 
         coll.AddTransient<PaypalApiClientFactory>();
@@ -59,11 +48,11 @@ var host = Host.CreateDefaultBuilder(args)
         coll.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         coll.AddSingleton<ICredentialStorage, InMemoryCredentialStorage>();
         coll.AddSingleton<PaypalAccessTokenManager>();
-        coll.AddSingleton(new ApplicationContext
-        {
-            ReturnUrl = new Uri("https://google.at/success"),
-            CancelUrl = new Uri("https://google.at/cancel")
-        });
+        //coll.AddSingleton(new ApplicationContext
+        //{
+        //    ReturnUrl = new Uri("https://google.at/success"),
+        //    CancelUrl = new Uri("https://google.at/cancel")
+        //});
     })
     .Build();
 
@@ -80,11 +69,11 @@ var order = await cli.CreateOrderAsync(new PurchaseUnit("CustomId", Currency.Eur
 Console.WriteLine(order.Links.Approve.Href);
 Console.ReadLine();
 var order1 = await cli.GetOrderAsync(order.Id);
-//if (order1.Status != PaypalOrderStatus.Approved)
-//{
-//    Console.WriteLine("Not Approved!");
-//    return;
-//}
+if (order1.Status != PaypalOrderStatus.Approved)
+{
+    Console.WriteLine("Not Approved!");
+    return;
+}
 
 var order2 = await cli.CaptureOrderAsync(order1.Id);
 if (order2.Status != PaypalOrderStatus.Completed)
@@ -93,10 +82,12 @@ if (order2.Status != PaypalOrderStatus.Completed)
     return;
 }
 
-foreach (var purchaseUnit in order2.PurchaseUnits)
-{
-    //purchaseUnit.ReferenceId
-}
+await cli.RefundOrderAsync(order2.Id);
+
+//foreach (var purchaseUnit in order2.PurchaseUnits)
+//{
+//    //purchaseUnit.ReferenceId
+//}
 
 
 

@@ -115,9 +115,7 @@ namespace Apro.Payment.PaypalApiClient.Services
         private static void PrepareHeaders(HttpRequestMessage request)
         {
             // https://developer.paypal.com/api/rest/requests/#paypal-request-id
-            request.Headers.Add("PayPal-Client-Metadata-Id", "Apro-Smorder");
             request.Headers.Add("PayPal-Request-Id", Guid.NewGuid().ToString());
-            request.Headers.Add("Prefer", "return=representation");
         }
     }
 }

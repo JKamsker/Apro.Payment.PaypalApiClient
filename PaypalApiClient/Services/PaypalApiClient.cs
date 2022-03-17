@@ -7,6 +7,7 @@ using Apro.Payment.PaypalApiClient.Models.Domain;
 using Apro.Payment.PaypalApiClient.Models;
 using Apro.Payment.PaypalApiClient.Models.Web.Payment.Refund;
 using System.Collections.Generic;
+using Apro.Payment.PaypalApiClient.Models.Exceptions;
 
 namespace Apro.Payment.PaypalApiClient.Services
 {
@@ -63,6 +64,15 @@ namespace Apro.Payment.PaypalApiClient.Services
         {
             var results = new List<PaypalRefund>();
             var order = await GetOrderAsync(orderId);
+            if (order.Status != PaypalOrderStatus.Completed)
+            {
+                throw new PaypalLogicException
+                (
+                    $"Order has an invalid status: {order.Status}. " +
+                    $"Expected {PaypalOrderStatus.Completed}"
+                );
+            }
+
             foreach (var purchaseUnit in order.PurchaseUnits)
             {
                 foreach (var capture in purchaseUnit.Captures)

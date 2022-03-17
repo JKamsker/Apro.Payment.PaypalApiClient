@@ -8,8 +8,9 @@ using System.Text;
 
 namespace Apro.Payment.PaypalApiClient.Models.Exceptions
 {
+
     [Serializable]
-    public class PaypalRequestException : Exception
+    public class PaypalRequestException : PayPalException
     {
         public string Name { get; }
 
