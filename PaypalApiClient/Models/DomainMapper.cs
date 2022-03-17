@@ -6,6 +6,7 @@ using Apro.Payment.PaypalApiClient.Models.Web.Order.Get;
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Apro.Payment.PaypalApiClient.Models
@@ -50,7 +51,11 @@ namespace Apro.Payment.PaypalApiClient.Models
 
         internal static Currency MapAmount(Web.CurrencyDto amount)
         {
-            return new Currency(amount?.Value ?? "0", amount?.CurrencyCode ?? "EUR");
+            return new Currency
+            (
+                decimal.Parse(amount?.Value ?? "0", CultureInfo.GetCultureInfoByIetfLanguageTag("EN-US")), 
+                amount?.CurrencyCode ?? "EUR"
+            );
         }
     }
 }
