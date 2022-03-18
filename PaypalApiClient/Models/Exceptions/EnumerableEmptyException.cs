@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Apro.Payment.PaypalApiClient.Extensions
+namespace Apro.Payment.PaypalApiClient.Models.Exceptions
 {
     [Serializable]
     internal class EnumerableEmptyException : Exception

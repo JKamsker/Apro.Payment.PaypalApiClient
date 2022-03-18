@@ -2,7 +2,7 @@
 using Apro.Payment.PaypalApiClient.Models.Exceptions;
 using Apro.Payment.PaypalApiClient.Models.Web;
 using Apro.Payment.PaypalApiClient.Models.Web.Error;
-using Apro.Payment.PaypalApiClient.Models.Web.Order.Get;
+using Apro.Payment.PaypalApiClient.Models.Web.Order;
 
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace Apro.Payment.PaypalApiClient.Models
 {
     internal class DomainMapper
     {
-        internal static PaypalOrder MapOrder(GetOrderDetailsResponseDto responseDto) => new()
+        internal static PaypalOrder MapOrder(OrderDto responseDto) => new()
         {
             Id = responseDto.Id,
             Status = responseDto.Status,

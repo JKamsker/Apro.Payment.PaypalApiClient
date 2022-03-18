@@ -1,7 +1,7 @@
 ﻿using Apro.Payment.PaypalApiClient.Models.Domain;
 using Apro.Payment.PaypalApiClient.Models.Web;
+using Apro.Payment.PaypalApiClient.Models.Web.Order;
 using Apro.Payment.PaypalApiClient.Models.Web.Order.Create;
-using Apro.Payment.PaypalApiClient.Models.Web.Order.Get;
 using Apro.Payment.PaypalApiClient.Models.Web.Payment.Refund;
 
 namespace Apro.Payment.PaypalApiClient.Models
