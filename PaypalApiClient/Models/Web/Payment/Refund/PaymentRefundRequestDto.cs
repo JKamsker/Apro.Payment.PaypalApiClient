@@ -9,7 +9,7 @@ namespace Apro.Payment.PaypalApiClient.Models.Web.Payment.Refund
 {
     public partial class PaymentRefundRequestDto
     {
-        [JsonProperty("amount")]
+        [JsonProperty("amount", NullValueHandling = NullValueHandling.Ignore)]
         public CurrencyDto Amount { get; set; }
 
         [JsonProperty("invoice_id", NullValueHandling = NullValueHandling.Ignore)]
@@ -17,7 +17,10 @@ namespace Apro.Payment.PaypalApiClient.Models.Web.Payment.Refund
 
         [JsonProperty("invoice_id", NullValueHandling = NullValueHandling.Ignore)]
         public string InvoiceId { get; set; }
+        public PaymentRefundRequestDto()
+        {
 
+        }
 
         public PaymentRefundRequestDto(CurrencyDto amount)
         {
