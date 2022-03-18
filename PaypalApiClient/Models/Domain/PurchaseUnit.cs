@@ -25,17 +25,17 @@ namespace Apro.Payment.PaypalApiClient.Models.Domain
     {
         public string CurrencyCode { get; set; }
 
-        public string Value { get; set; }
+        public decimal Value { get; set; }
 
-        internal Currency(string value, string currencyCode)
-        {
-            Value = value;
-            CurrencyCode = currencyCode;
-        }
+        //internal Currency(string value, string currencyCode)
+        //{
+        //    Value = value;
+        //    CurrencyCode = currencyCode;
+        //}
 
         public Currency(decimal value, string currencyCode)
         {
-            Value = value.ToString(CultureInfo.GetCultureInfoByIetfLanguageTag("EN-US"));
+            Value = value;//value.ToString(CultureInfo.GetCultureInfoByIetfLanguageTag("EN-US"));
             CurrencyCode = currencyCode;
         }
 

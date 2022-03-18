@@ -107,5 +107,21 @@ namespace Apro.Payment.PaypalApiClient.Services
 
             return results;
         }
+
+        public async Task<PaypalRefund> RefundCaptureAsync(RefundParams refundParams)
+        {
+            var token = await _tokenManager.GetAccessTokenAsync(_httpClient);
+
+            var dto = DtoMapper.MapRefundParams(refundParams);
+            var refundResult = await _httpClient.RefundPaymentAsync(token, refundParams.CaptureId, dto);
+
+            return new PaypalRefund
+            {
+                Id = refundResult.Id,
+                Amount = DomainMapper.MapAmount(refundResult.Amount),
+                Reason = refundResult.NoteToPayer,
+                Status = refundResult.Status
+            };
+        }
     }
 }

@@ -1,4 +1,6 @@
 ﻿
+using Apro.Payment.PaypalApiClient.Models.Exceptions;
+
 using Ardalis.GuardClauses;
 
 using System.Collections.Generic;

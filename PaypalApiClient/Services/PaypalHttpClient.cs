@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using Apro.Payment.PaypalApiClient.Http;
-using Apro.Payment.PaypalApiClient.Models.Web.Order.Get;
 using Apro.Payment.PaypalApiClient.Models.Web.Order.Create;
 using Apro.Payment.PaypalApiClient.Models.Web.Token;
 using Apro.Payment.PaypalApiClient.Models.Web.Payment.Refund;
 using Apro.Payment.PaypalApiClient.Models.Web.Error;
 using Apro.Payment.PaypalApiClient.Models.Exceptions;
+using Apro.Payment.PaypalApiClient.Models.Web.Order;
 
 namespace Apro.Payment.PaypalApiClient.Services
 {
@@ -45,23 +45,23 @@ namespace Apro.Payment.PaypalApiClient.Services
             return JsonConvert.DeserializeObject<T>(responseText);
         }
 
-        public async Task<GetOrderDetailsResponseDto> CreateOrderAsync(string token, PaypalCreateOrderRequestDto createOrderRequestDto)
+        public async Task<OrderDto> CreateOrderAsync(string token, PaypalCreateOrderRequestDto createOrderRequestDto)
         {
             using var request = new HttpRequestMessage(HttpMethod.Post, "/v2/checkout/orders");
             PrepareHeaders(token, request);
             request.Content = new JsonContent(createOrderRequestDto);
 
-            return await ExecuteRequestAsync<GetOrderDetailsResponseDto>(request);
+            return await ExecuteRequestAsync<OrderDto>(request);
         }
 
-        public async Task<GetOrderDetailsResponseDto> GetOrderDetailsAsync(string token, string orderId)
+        public async Task<OrderDto> GetOrderDetailsAsync(string token, string orderId)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, $"/v2/checkout/orders/{orderId}");
             PrepareHeaders(token, request);
-            return await ExecuteRequestAsync<GetOrderDetailsResponseDto>(request);
+            return await ExecuteRequestAsync<OrderDto>(request);
         }
 
-        public async Task<GetOrderDetailsResponseDto> CaptureOrderAsync(string token, string orderId)
+        public async Task<OrderDto> CaptureOrderAsync(string token, string orderId)
         {
             ///v2/checkout/orders/{{payment_id}}/capture
             using var request = new HttpRequestMessage(HttpMethod.Post, $"/v2/checkout/orders/{orderId}/capture");
@@ -70,7 +70,7 @@ namespace Apro.Payment.PaypalApiClient.Services
             request.Content = new StringContent("");
             request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
 
-            return await ExecuteRequestAsync<GetOrderDetailsResponseDto>(request);
+            return await ExecuteRequestAsync<OrderDto>(request);
         }
 
         public async Task<PaymentRefundResultDto> RefundPaymentAsync(string token, string paymentCaptureId, PaymentRefundRequestDto refundRequest)

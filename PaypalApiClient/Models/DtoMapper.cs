@@ -1,7 +1,8 @@
 ﻿using Apro.Payment.PaypalApiClient.Models.Domain;
 using Apro.Payment.PaypalApiClient.Models.Web;
+using Apro.Payment.PaypalApiClient.Models.Web.Order;
 using Apro.Payment.PaypalApiClient.Models.Web.Order.Create;
-using Apro.Payment.PaypalApiClient.Models.Web.Order.Get;
+using Apro.Payment.PaypalApiClient.Models.Web.Payment.Refund;
 
 namespace Apro.Payment.PaypalApiClient.Models
 {
@@ -18,5 +19,12 @@ namespace Apro.Payment.PaypalApiClient.Models
 
         internal static CurrencyDto MapAmount(Currency amount)
              => new CurrencyDto(amount.Value, amount.CurrencyCode);
+
+        internal static PaymentRefundRequestDto MapRefundParams(RefundParams refundParams) => new PaymentRefundRequestDto()
+        {
+            InvoiceId = refundParams.InvoiceId,
+            Amount = MapAmount(refundParams.Amount),
+            NoteToPayer = refundParams.NoteToPayer,
+        };
     }
 }
