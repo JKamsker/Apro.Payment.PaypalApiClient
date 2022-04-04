@@ -15,7 +15,11 @@ namespace Apro.Payment.PaypalApiClient.Models
         };
 
         internal static PurchaseUnitDto MapPurchaseUnit(PurchaseUnit purchaseUnit)
-         => new PurchaseUnitDto(purchaseUnit.ReferenceId, MapAmount(purchaseUnit.Amount));
+         => new PurchaseUnitDto(MapAmount(purchaseUnit.Amount))
+         {
+             ReferenceId = purchaseUnit.ReferenceId,
+             Description = purchaseUnit.Description,
+         };
 
         internal static CurrencyDto MapAmount(Currency amount)
              => new CurrencyDto(amount.Value, amount.CurrencyCode);

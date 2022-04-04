@@ -9,15 +9,14 @@ namespace Apro.Payment.PaypalApiClient.Models.Domain
     public class PurchaseUnit
     {
         public string ReferenceId { get; set; }
+        public string Description { get; set; }
 
         public Currency Amount { get; set; }
-        public ICollection<PaymentCapture> Captures { get; }
+        public ICollection<PaymentCapture> Captures { get;  set; }
 
-        public PurchaseUnit(string referenceId, Currency amount, IEnumerable<PaymentCapture> captures = null)
+        public PurchaseUnit(Currency amount)
         {
-            ReferenceId = referenceId;
             Amount = amount;
-            Captures = captures?.ToList();
         }
     }
 
