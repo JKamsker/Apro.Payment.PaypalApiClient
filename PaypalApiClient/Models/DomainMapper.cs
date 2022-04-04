@@ -45,7 +45,7 @@ namespace Apro.Payment.PaypalApiClient.Models
         {
             return new PurchaseUnit(MapAmount(purchaseUnit.Amount))
             {
-                Captures = MapCaptures(purchaseUnit.Payments?.Captures).ToList(),
+                Captures = MapCaptures(purchaseUnit.Payments?.Captures)?.ToList(),
                 ReferenceId = purchaseUnit.ReferenceId,
             };
         }

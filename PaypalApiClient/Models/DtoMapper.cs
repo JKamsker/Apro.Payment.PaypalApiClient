@@ -19,6 +19,7 @@ namespace Apro.Payment.PaypalApiClient.Models
          {
              ReferenceId = purchaseUnit.ReferenceId,
              Description = purchaseUnit.Description,
+             
          };
 
         internal static CurrencyDto MapAmount(Currency amount)
