@@ -40,7 +40,7 @@ var fac = host.Services.GetRequiredService<PaypalApiClientFactory>();
 var cli = fac.Create(credentials.Value);
 
 
-var order = await cli.CreateOrderAsync(new PurchaseUnit("CustomId", Currency.Euro(1.2m)));
+var order = await cli.CreateOrderAsync(new PurchaseUnit(Currency.Euro(1.2m)));
 
 Console.WriteLine(order.Links.Approve.Href);
 Console.ReadLine();

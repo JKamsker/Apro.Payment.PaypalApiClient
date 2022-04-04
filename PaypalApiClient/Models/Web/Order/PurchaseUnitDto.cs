@@ -5,8 +5,12 @@ namespace Apro.Payment.PaypalApiClient.Models.Web.Order
 {
     public class PurchaseUnitDto
     {
-        [JsonProperty("reference_id")]
+        [JsonProperty("reference_id", NullValueHandling = NullValueHandling.Ignore)]
+
         public string ReferenceId { get; set; }
+
+        [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
+        public string Description { get; set; }
 
         [JsonProperty("amount")]
         public CurrencyDto Amount { get; set; }
@@ -17,12 +21,9 @@ namespace Apro.Payment.PaypalApiClient.Models.Web.Order
         [JsonProperty("payments")]
         public PaymentsDto Payments { get; set; }
 
-        public PurchaseUnitDto(string referenceId, CurrencyDto amount, PayeeDto payee = null, PaymentsDto payments = null)
+        public PurchaseUnitDto(CurrencyDto amount)
         {
-            ReferenceId = referenceId;
             Amount = amount;
-            Payee = payee;
-            Payments = payments;
         }
     }
 }

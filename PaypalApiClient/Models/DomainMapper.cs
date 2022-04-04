@@ -43,7 +43,11 @@ namespace Apro.Payment.PaypalApiClient.Models
 
         internal static PurchaseUnit MapPurchaseUnit(PurchaseUnitDto purchaseUnit)
         {
-            return new PurchaseUnit(purchaseUnit.ReferenceId, MapAmount(purchaseUnit.Amount), MapCaptures(purchaseUnit.Payments?.Captures));
+            return new PurchaseUnit(MapAmount(purchaseUnit.Amount))
+            {
+                Captures = MapCaptures(purchaseUnit.Payments?.Captures).ToList(),
+                ReferenceId = purchaseUnit.ReferenceId,
+            };
         }
 
         internal static IEnumerable<PaymentCapture> MapCaptures(IEnumerable<CaptureDto> captures)
