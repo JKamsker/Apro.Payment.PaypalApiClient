@@ -35,13 +35,13 @@ jobs:
 
       shell: pwsh
 
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1
-      with:
-        nuget-version: '6.x'
+    # - name: Setup NuGet
+    #   uses: NuGet/setup-nuget@v1
+    #   with:
+    #     nuget-version: '6.x'
 
-    - name: Restore dependencies
-      run: nuget restore $SOLUTION
+    # - name: Restore dependencies
+    #   run: nuget restore $SOLUTION
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
