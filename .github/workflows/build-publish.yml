@@ -37,8 +37,8 @@ jobs:
 
     - name: Setup NuGet
       uses: NuGet/setup-nuget@v1
-        with:
-          nuget-version: '6.x'
+      with:
+        nuget-version: '6.x'
 
     - name: Restore dependencies
       run: nuget restore $SOLUTION
