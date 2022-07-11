@@ -12,7 +12,7 @@ namespace Apro.Payment.PaypalApiClient.Models.Web.Payment.Refund
         [JsonProperty("amount", NullValueHandling = NullValueHandling.Ignore)]
         public CurrencyDto Amount { get; set; }
 
-        [JsonProperty("invoice_id", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("note_to_payer", NullValueHandling = NullValueHandling.Ignore)]
         public string NoteToPayer { get; set; }
 
         [JsonProperty("invoice_id", NullValueHandling = NullValueHandling.Ignore)]
